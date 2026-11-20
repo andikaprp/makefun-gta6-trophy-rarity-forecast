@@ -17,6 +17,10 @@ trend, and a floor for the refresh steps no history can time.
 Standard library only, deterministic: the same case always yields the same
 bytes. Run it the way the grader does:
     MAKEFUN_INPUT_DIR=input MAKEFUN_OUTPUT_DIR=out python3 main.py
+
+v2 (2026-11-20): two constants recalibrated against fresh evidence -
+W_DECOMP 0.4 -> 0.2 and FALLBACK_SPREAD 0.95 -> 1.3. Everything else is
+identical to the submitted v1. Evidence and caveats: IMPROVEMENT2.md.
 """
 
 import json
@@ -36,7 +40,8 @@ Z_TABLE = {0.05: -1.645, 0.25: -0.674, 0.5: 0.0, 0.75: 0.674, 0.95: 1.645}
 EPOCH = datetime(2026, 11, 19, 0, 0, 0, tzinfo=timezone.utc)
 
 # Model constants (see MODEL.md; chosen on structure, checked by simulation).
-W_DECOMP = 0.4         # weight of the earners/pool decomposition in the median
+W_DECOMP = 0.2         # weight of the earners/pool decomposition in the median
+                       # (v2 recalibration: 0.4 -> 0.2, see IMPROVEMENT2.md)
 E_DAMP = 1.0           # damping on the earners extrapolation distance
 T_DAMP = 0.3           # damping on the rate-trend extrapolation distance
 N_DAMP = 1.0           # damping on the pool extrapolation distance
@@ -45,7 +50,8 @@ RESID_COEF = 0.8       # weight of a trophy's own trend-residual volatility
 SPREAD_FLOOR = 0.30    # refresh-step floor on the spread, logit units
 SPREAD_MIN = 0.35
 SPREAD_MAX = 2.2
-FALLBACK_SPREAD = 0.95  # spread when there is no usable trend (e.g. practice)
+FALLBACK_SPREAD = 1.3   # spread when there is no usable trend (e.g. practice)
+                       # (v2 recalibration: 0.95 -> 1.3, see IMPROVEMENT2.md)
 
 
 def clamp_rate(x):
